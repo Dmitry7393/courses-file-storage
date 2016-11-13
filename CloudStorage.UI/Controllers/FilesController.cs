@@ -9,6 +9,7 @@
     using System.Configuration;
     using System.IO;
     using Models;
+    using CloudStorage.Services.Services.ConverterServices.Factory;
     /// <summary>
     /// Defines FilesController
     /// </summary>
@@ -134,6 +135,111 @@
                                     , GetContentType(file.Extension)
                                     , file.FullName);
         }
+
+
+
+        // Summary
+        //  Redact text file
+        //
+        // Parameters:
+        //   id:
+        // Identifier of redacting file
+        [HttpGet]
+        public JsonResult Redact(int id)
+        {
+            // Summary:
+            //     Get the new instance of redacting FileInfo object
+            var file = this._fileService.GetFileById(id, User.Identity.GetUserId());
+
+            // Summary:
+            //     If such file doesn't exist return error
+            if (file == null)
+            {
+                return Json(new { error = true, reason = "File not found" }, JsonRequestBehavior.AllowGet);
+            }
+            IFileConverter converter = null;
+            try
+            {
+                // Summary:
+                //     Get the new instance of IFileConverter intarface that depend on file extension
+                converter = FactoryConverter.CreateConveterInstace(file.Extension);
+
+                // Summary:
+                //     Create fileName that actual stored on server
+                var name = file.Name.Substring(0, file.Name.IndexOf("."));
+                name += ".dat";
+
+                // Summary:
+                //     htmlText string that represent all text from redacting file
+                string htmlText = converter.ToHtml(Server.MapPath(getPathToUserFolder()) + "\\" + file.Id + ".dat");
+                return Json(new { success = true, responseText = htmlText, fileName = file.Name }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, reason = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+           
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public JsonResult Redact(int id, string htmlText)
+        {
+            // Summary:
+            //     Get the new instance of redacting FileInfo object
+            var file = this._fileService.GetFileById(id, User.Identity.GetUserId());
+
+            IFileConverter converter;
+            try
+            {
+                // Summary:
+                //     Get the new instance of IFileConverter intarface that depend on file extension
+                converter = FactoryConverter.CreateConveterInstace(file.Extension);
+
+                // Summary:
+                //     Create fileName that actual stored on server
+
+                var name = file.Name.Substring(0, file.Name.IndexOf("."));
+                name += ".dat";
+
+                // Summary:
+                //    Save all changed text to file
+                converter.FromHtml(Server.MapPath(getPathToUserFolder()) + "\\" + file.Id + ".dat", htmlText);
+                return Json(new { success = true, responseText = htmlText, fileName = file.Name }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = true, reason = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            Domain.FileAggregate.FileInfo file = null;
+            try
+            {
+                // Summary:
+                //     Get the new instance of FileInfo object that will be deleted
+                file = _fileService.GetFileById(id, User.Identity.GetUserId());
+
+                // Summary:
+                //    Delete file
+                this._fileService.Delete(id, User.Identity.GetUserId());
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", ex);
+            }
+            // Summary:
+            //     Return PartialView and using created instace of file for getting current folder
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(file.ParentID, User.Identity.GetUserId()));
+
+        }
+
+
+
 
         /// <summary>
         /// Get type of content that depends on of the file extension.

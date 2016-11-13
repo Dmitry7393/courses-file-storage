@@ -244,6 +244,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\scripts-redacting\delete-edit.js" />
+    <Content Include="Scripts\scripts-redacting\Save.js" />
     <Content Include="Scripts\scripts-treeview\treeview.js" />
     <Content Include="Scripts\scripts-treeview\jquery.treeview.js" />
     <Content Include="Scripts\respond.js" />
