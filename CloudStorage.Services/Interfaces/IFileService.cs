@@ -17,7 +17,7 @@
 
         Domain.FileAggregate.FileInfo GetFileById(int fileId, string userId);
 
-        void Delete(int id);
+        void Delete(int id, string userId);
 
         List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId);
 

@@ -23,6 +23,13 @@
 <script src="~/Scripts/scripts-treeview/jquery.treeview.js"></script>
 <script src="~/Scripts/scripts-treeview/treeview.js"></script>
 
+
+<script src="~/Scripts/scripts-redacting/delete-edit.js"></script>
+<script src="../ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/scripts-redacting/Save.js"></script>
+<link href="../popr/popr.css" rel="stylesheet">
+<script src="../popr/popr.min.js"></script>
+
 <input type="hidden" id="currentFolderID" name="currentFolderID" value="0" />
 
 @Html.Hidden("MyURL", @Url.Action("Upload", "Files", new { id = 0 }))
