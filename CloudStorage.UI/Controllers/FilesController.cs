@@ -54,7 +54,7 @@
                                                                     {
                                                                         Name = Request.Files[fileName].FileName,
                                                                         CreationDate = DateTime.Now,
-                                                                        Extension = Path.GetExtension(Request.Files[fileName].FileName),
+                                                                        Extension = Path.GetExtension(Request.Files[fileName].FileName.ToLower()),
                                                                         OwnerId = User.Identity.GetUserId(),
                                                                         ParentID = currentFolderID
                                                                     },
@@ -110,8 +110,6 @@
                 case null:
                     return File(Path.Combine(dir, "icon-folder.png"), GetContentType(file.Extension));
                 case ".jpg":
-                    return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
-                case ".JPG":
                     return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
                 case ".png":
                     return File(_fileService.GetImageBytes(fileID, Server.MapPath(getPathToUserFolder())), GetContentType(file.Extension));
