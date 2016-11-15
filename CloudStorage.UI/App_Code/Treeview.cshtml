@@ -8,17 +8,19 @@ foreach (var i in fileSctructure.Where(a => a.ParentID.Equals(parentID)))
     {
         itemClass = "opened";
     }
-        <li class="@itemClass">
+        <li class="@itemClass" >
             @{var submenu = fileSctructure.Where(a => a.ParentID.Equals(i.Id)).Count();}
             @if (i.Extension == null)
             {
                 <span class="folder">
-                    <a href="javascript:void(0);" onclick="showFilesInFolder(@i.Id);">@i.Name</a>
+                    <a href="javascript:void(0);" onclick="selectItemFileInTreeview(this);showFilesInFolder(@i.Id);">@i.Name</a>
                 </span>
             }
             else
             {
-                <span class="file">@i.Name</span>
+                <span class="file">
+                    <a href="javascript:void(0);" onclick="selectItemFileInTreeview(this);">@i.Name</a>
+                </span>
             }
             @if (submenu > 0)
             {

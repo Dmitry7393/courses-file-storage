@@ -223,6 +223,9 @@
     <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Content\style-browsing-files.css" />
     <Content Include="Content\Treeview\jquery.treeview.css" />
+    <Content Include="Scripts\scripts_uploading_files\upload-folder.js" />
+    <Content Include="Scripts\drag-and-drop\file-structure-tree.js" />
+    <Content Include="Scripts\scripts-treeview\select-item.js" />
     <Content Include="Content\Treeview\treeview-scrollbar.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -250,12 +253,14 @@
     <Content Include="Scripts\scripts-treeview\jquery.treeview.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\scripts_uploading_files\add-folder.js" />
+    <Content Include="Scripts\scripts_uploading_files\create-folder.js" />
     <Content Include="Scripts\scripts_uploading_files\dialog.js" />
-    <Content Include="Scripts\scripts_uploading_files\drag-and-drop.js" />
+    <Content Include="Scripts\drag-and-drop\prevent-default.js" />
     <Content Include="Scripts\scripts_uploading_files\right-click-menu.js" />
+    <Content Include="Scripts\scripts_uploading_files\update-displaying-area.js" />
     <Content Include="Scripts\scripts_uploading_files\update-treeview.js" />
     <Content Include="Scripts\scripts_uploading_files\upload-file-ajax.js" />
+    <Content Include="Scripts\drag-and-drop\create-formdata.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -284,6 +289,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Files\Index.cshtml" />
     <Content Include="Views\Files\_Treeview.cshtml" />
+    <Content Include="Views\Files\_DialogBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

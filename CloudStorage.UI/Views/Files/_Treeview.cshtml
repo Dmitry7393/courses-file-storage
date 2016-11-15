@@ -2,7 +2,7 @@
 
 <!--Drawing tree view-->
     <div class="divTreeView" id="partial_view_treeview">
-        <a onclick="showFilesInFolder(0)" href="javascript:void(0);">Root folder</a>
+        <a href="javascript:void(0);" onclick="selectItemFileInTreeview(this);showFilesInFolder(0)">Root folder</a>
         <div id="scrollbar">
             @if (Model != null && Model.Count() > 0)
             {

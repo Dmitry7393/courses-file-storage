@@ -57,9 +57,9 @@
             for (int a = from.ReadByte(); a != -1; a = from.ReadByte())
                 to.WriteByte((byte)a);
         }
-        public void AddNewFolder(Domain.FileAggregate.FileInfo folder)
+        public int AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
-             _fileInfoRepository.Add(folder);
+            return _fileInfoRepository.Add(folder);
         }
 
         /// <summary>

@@ -1,7 +1,12 @@
-﻿function showFilesInFolder(itemID)
+﻿$(document).ready(function () {
+    //Show files in root folder
+    showFilesInFolder(0);
+})
+
+//Download preview in chosen folder
+function showFilesInFolder(itemID)
 {
     $("#currentFolderID").val(itemID);
-
     $.ajax({
         url: '/Files/ShowUserFiles',
         type: "POST",
@@ -9,6 +14,7 @@
         dataType: "html",
 
         success: function (data) {
+            //update partial view _BrowsingFiles
             $('div#block_view_files_folders').html(data);
         },
         error: function (xhr) {

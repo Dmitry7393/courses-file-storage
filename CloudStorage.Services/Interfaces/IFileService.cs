@@ -11,7 +11,7 @@
     {
         void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder);
 
-        void AddNewFolder(Domain.FileAggregate.FileInfo folder);
+        int AddNewFolder(Domain.FileAggregate.FileInfo folder);
 
         void Edit(Domain.FileAggregate.FileInfo file);
 
