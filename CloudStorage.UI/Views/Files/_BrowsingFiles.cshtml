@@ -13,24 +13,45 @@
              id="dropArea">
             <div>
                 @if (Model != null)
-            {
-                foreach (var file in Model)
                 {
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center">
-                            <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' width="60" height="60" />
+                    foreach (var file in Model)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center popr" id="@file.Id" onclick="test(@file.Id)" data-id="1">
+                            <input hidden name="@file.Id" value="@file.Extension" />
+
+                            @if (file.Extension == null)
+                            {
+                                <img src="~/Content/Icons/icon-folder.png" width="60" height="60" />
+                            }
+                            else
+                            {
+                                <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' width=" 60" height="60" />
+
+
+                            }
                             <br />
-                            @file.Name
+                            <div id="truncateLongTexts">
+                                @file.Name
+                            </div>
+
+
                         </div>
                     }
                 }
-            </div>
-            <div id="progressBar">
-                <progress value="0" max="100" id="progresBar">
-                    Текст
-                </progress>
+
+                <div class="popr-box" data-box-id="1">
+                    <div class="popr-item " id="edit" onclick="redact('edit')">Redact</div>
+                    <div class="popr-item label-danger" id="delete" onclick="del('edit')">Delete</div>
+                </div>
             </div>
         </div>
+
+        <div id="progressBar">
+            <progress value="0" max="100" id="progresBar">
+                Текст
+            </progress>
+        </div>
     </div>
-  
+</div>
 </div>
 

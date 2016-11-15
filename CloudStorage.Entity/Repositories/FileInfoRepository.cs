@@ -45,7 +45,16 @@
         /// <param name="id">The id of file to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            using (var context = CreateContext())
+            {
+                var file = context.Files.Where(i => i.Id == id).FirstOrDefault();
+                if (file != null)
+                {
+                    context.Files.Remove(file);
+
+                }
+                context.SaveChanges();
+            }
         }
 
         /// <summary>

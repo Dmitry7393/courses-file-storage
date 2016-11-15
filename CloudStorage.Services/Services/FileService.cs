@@ -66,9 +66,35 @@
         /// Deletes file by its identifier.
         /// </summary>
         /// <param name="id">Identifier of file.</param>
-        public void Delete(int id)
+        public void Delete(int id, string userId)
         {
-            throw new NotImplementedException();
+            // NOTE
+            // 
+            // For correct deleting file from server need send a Server.MapPath
+
+            var file = _fileInfoRepository.GetFileById(id);
+            if (file.Extension != null)
+            {
+                _fileInfoRepository.Remove(id);
+            }
+            else
+            {
+                //this.GetFilesInFolderByUserID();
+                var nestedFolders = this.GetSubfoldersByFolderID(id);
+                var nestedFiles = _fileInfoRepository.GetFilesInFolderByUserID(id, userId);
+                foreach (var item in nestedFiles)
+                {
+                    _fileInfoRepository.Remove(item.Id);
+                }
+                if (nestedFolders != null)
+                {
+                    foreach (var item in nestedFolders)
+                    {
+                        Delete(item, userId);
+                    }
+                }
+            }
+
         }
 
         /// <summary>

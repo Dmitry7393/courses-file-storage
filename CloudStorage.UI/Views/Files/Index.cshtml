@@ -31,6 +31,13 @@
 
 <script src="~/Scripts/drag-and-drop/file-structure-tree.js"></script>
 
+
+<script src="~/Scripts/scripts-redacting/delete-edit.js"></script>
+<script src="../ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/scripts-redacting/Save.js"></script>
+<link href="../popr/popr.css" rel="stylesheet">
+<script src="../popr/popr.min.js"></script>
+
 <input type="hidden" id="currentFolderID" name="currentFolderID" value="0" />
 <input type="hidden" id="uploadFolderRootID" name="uploadFolderRootID" value="0" />
 
@@ -59,8 +66,6 @@
         </tr>
     </table>
 </div>
-<input id="dirinput" multiple="" directory="" type="file" />
-
 @Html.Partial("_DialogBox");
 
 <!--Displays file structure with Treeview-->

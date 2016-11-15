@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.Facebook;
 using Owin;
 
 namespace CloudStorage.UI
@@ -28,11 +30,16 @@ namespace CloudStorage.UI
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "676116969222263",
+               appSecret: "c3f5be631126d676e157a8a2b8c060de");
 
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "85925986023-h02r7dautdahvu58ceggm0qtn31fu87i.apps.googleusercontent.com",
+                ClientSecret = "EU4vN7zUHztAK8vTpvfm1o7r",
+                Provider = new GoogleOAuth2AuthenticationProvider()
+            });
         }
     }
 }

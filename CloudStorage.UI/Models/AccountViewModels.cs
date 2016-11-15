@@ -5,7 +5,7 @@ namespace CloudStorage.UI.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
     }
 
@@ -30,8 +30,9 @@ namespace CloudStorage.UI.Models
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "User name")]
+        [Required(ErrorMessage = "Field can't be empty")]
+        [EmailAddress(ErrorMessage = "Invalid Email address")]
+        [Display(Name = "Email")]
         public string UserName { get; set; }
 
         [Required]
@@ -45,8 +46,9 @@ namespace CloudStorage.UI.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [Display(Name = "User name")]
+        [Required(ErrorMessage = "Field can't be empty")]
+        [EmailAddress(ErrorMessage = "Invalid Email address")]
+        [Display(Name = "Email")]
         public string UserName { get; set; }
 
         [Required]

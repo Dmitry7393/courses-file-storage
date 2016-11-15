@@ -267,7 +267,7 @@
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new User() { UserName = model.UserName };
+                var user = new User() { UserName = model.UserName};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
