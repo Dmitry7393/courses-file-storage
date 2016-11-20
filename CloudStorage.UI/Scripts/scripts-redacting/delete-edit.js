@@ -1,11 +1,13 @@
 ﻿var itemId;
 function test(obj) {
     itemId = obj;
-
     console.log($('input[name=' + itemId + ']').val());
     $("#" + obj).popr();
 
 };
+function downloadFile(obj) {
+    window.location = '/Files/Download?id=' + itemId;
+}
 function del(obj) {
     var a = "123";
 
