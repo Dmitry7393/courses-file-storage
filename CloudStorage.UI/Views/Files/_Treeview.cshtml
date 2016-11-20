@@ -7,7 +7,7 @@
             @if (Model != null && Model.Count() > 0)
             {
                 <ul id="browser" class="filetree">
-                    @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentID, ViewBag.ListSubfoldersID)
+                    @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentID, ViewBag.ListSubfoldersID, ViewBag.FolderID)
                 </ul>
             }
         </div>
