@@ -17,10 +17,8 @@ function del(obj) {
     }
 
     ).complete(function (partialViewResult) {
-
-        console.log("Done delete");
-        location.reload();
-        //$("#brows").html(partialViewResult);
+        updateTreeview($('#currentFolderID').val());
+        showFilesInFolder($('#currentFolderID').val());
     });
 
 };

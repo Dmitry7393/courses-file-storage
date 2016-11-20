@@ -195,6 +195,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\CloudStorage.mdf" />
+    <Content Include="App_Data\CloudStorage_log.ldf">
+      <DependentUpon>CloudStorage.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dialog\dialog.css" />
@@ -223,6 +227,7 @@
     <Content Include="Content\images\treeview-red.gif" />
     <Content Include="Content\style-browsing-files.css" />
     <Content Include="Content\Treeview\jquery.treeview.css" />
+    <Content Include="Scripts\displays-files\open-folder.js" />
     <Content Include="Scripts\scripts_uploading_files\upload-folder.js" />
     <Content Include="Scripts\drag-and-drop\file-structure-tree.js" />
     <Content Include="Scripts\scripts-treeview\select-item.js" />
@@ -234,6 +239,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Code\Treeview.cshtml" />
+    <None Include="Properties\PublishProfiles\CloudStorage.pubxml" />
     <None Include="Properties\PublishProfiles\Profile_CloudStorage.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\displays-files\show-files-in-folder.js" />
@@ -292,7 +298,6 @@
     <Content Include="Views\Files\_DialogBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,11 @@
         {
             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId()));
         }
+        public PartialViewResult OpenFolder(int elementID)
+        {
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(elementID, User.Identity.GetUserId()));
+        }
+
         [HttpPost]
         public PartialViewResult UploadFile(int currentFolderID)
         {
@@ -89,6 +94,7 @@
         [HttpGet]
         public PartialViewResult UpdateTreeview(int currentFolderID)
         {
+            ViewBag.FolderID = currentFolderID;
             //List with subfolders which have to opened after adding files or folders
             ViewBag.ListSubfoldersID = _fileService.GetSubfoldersByFolderID(currentFolderID);
             return PartialView("_Treeview", _fileService.GetFilesByUserID(User.Identity.GetUserId()));

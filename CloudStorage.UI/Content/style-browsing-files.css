@@ -1,41 +1,46 @@
 ﻿ html, body { 
       background-color: ghostwhite;
-  
       padding: 0;
-    overflow: hidden;
+      overflow: hidden;
  }
-        .ContextItem {
-            background-color: White;
-            color: Black;
-            font-weight: normal;
-        }
+.ContextItem {
+    background-color: White;
+    color: Black;
+    font-weight: normal;
+}
 
-            .ContextItem:hover {
-                background-color: #0066FF;
-                color: White;
-                font-weight: bold;
-            }
-             .bottom-three {
-                margin-bottom: 30cm;
-             }
-             #displayingData {
-                position:absolute;
-                top: 25%; 
-                left: 25%; 
-               height:100%;
-              width:100%;
-             }
-             #dropArea {
-             background-color: khaki;
-              height:100%;
-              width:100%;
-        }
-            #progressBar {
-               position: fixed;
-                bottom: 0;
-                right: 0;
-            }
-          .property-align-center {
-            text-align: center;
-        }
+.ContextItem:hover {
+    background-color: #0066FF;
+    color: White;
+    font-weight: bold;
+}
+.bottom-three {
+    margin-bottom: 30cm;
+}
+#displayingData {
+    position:absolute;
+    top: 20vh;
+    left: 50vh; 
+    width: 60vw;
+    height:70vh;            
+    }
+#dropArea {
+    position: absolute;
+    background-color: khaki;
+    width: 60vw;
+    height:70vh;          
+}
+#scrollbarViewData {
+    overflow-y: scroll;
+    width: 60vw;
+    height:70vh;
+}
+#progressBar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.property-align-center {
+    text-align: center;
+}
 

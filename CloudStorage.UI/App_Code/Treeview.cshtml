@@ -1,8 +1,9 @@
-﻿@helper GetTreeView(List<CloudStorage.Domain.FileAggregate.FileInfo> fileSctructure, int parentID, List<int> listSubfolders)
+﻿@helper GetTreeView(List<CloudStorage.Domain.FileAggregate.FileInfo> fileSctructure, int parentID, List<int> listSubfolders, int selectedFolderID)
 {
 
 foreach (var i in fileSctructure.Where(a => a.ParentID.Equals(parentID)))
 {
+          
     string itemClass = "closed";
     if (listSubfolders.Contains(i.Id))
     {
@@ -12,8 +13,14 @@ foreach (var i in fileSctructure.Where(a => a.ParentID.Equals(parentID)))
             @{var submenu = fileSctructure.Where(a => a.ParentID.Equals(i.Id)).Count();}
             @if (i.Extension == null)
             {
+                string itemClassSelected = "";
+                if (i.Id == selectedFolderID)
+                {
+                    itemClassSelected = "selected";
+                }
+                
                 <span class="folder">
-                    <a href="javascript:void(0);" onclick="selectItemFileInTreeview(this);showFilesInFolder(@i.Id);">@i.Name</a>
+                    <a class="@itemClassSelected" href="javascript:void(0);" onclick="selectItemFileInTreeview(this);showFilesInFolder(@i.Id);">@i.Name</a>
                 </span>
             }
             else
@@ -25,7 +32,7 @@ foreach (var i in fileSctructure.Where(a => a.ParentID.Equals(parentID)))
             @if (submenu > 0)
             {
                 <ul>
-                    @Treeview.GetTreeView(fileSctructure, i.Id, listSubfolders)
+                    @Treeview.GetTreeView(fileSctructure, i.Id, listSubfolders, selectedFolderID)
                     @* Recursive  Call for Populate Sub items here*@
                 </ul>
             }
