@@ -134,7 +134,7 @@
             var folderFile = GetFileById(folderID, userID);
             using (var zip = new ZipFile())
             {
-                FindFiles(zip, folderID, userID, pathToUserFolder, folderFile.Name);
+                FindFiles(zip, folderID, userID, pathToUserFolder, folderFile.Name, folderFile.ParentID);
                 zip.Save(outputStream);
             }
             outputStream.Position = 0;
@@ -142,7 +142,7 @@
         }
         //Recursive search of files in subdirectories.
         //Adding all files and folders in zip archive 
-        public void FindFiles(ZipFile zip, int id, string userId, string pathToUserFolder, string pathInArchive)
+        public void FindFiles(ZipFile zip, int id, string userId, string pathToUserFolder, string pathInArchive, int rootDirID)
         {
             var nestedFolders = _fileInfoRepository.GetNestedFolders(id);
             var nestedFiles = _fileInfoRepository.GetFilesInFolderByUserID(id, userId);
@@ -163,14 +163,14 @@
                 foreach (var item in nestedFolders)
                 {
                     //Getting path in subfolders
-                    List<int> listSubFolders = _fileInfoRepository.GetSubFolders(item);
+                    List<int> listSubFolders = _fileInfoRepository.GetSubFoldersInCertainFolder(item, rootDirID);
                     listSubFolders.Reverse();
                     string pathFolderInZip = "";
                     foreach (var fileid in listSubFolders)
                     {
                         pathFolderInZip = Path.Combine(pathFolderInZip, GetFileById(fileid, userId).Name);
                     }
-                    FindFiles(zip, item, userId, pathToUserFolder, pathFolderInZip);
+                    FindFiles(zip, item, userId, pathToUserFolder, pathFolderInZip, rootDirID);
                 }
             }
         }
