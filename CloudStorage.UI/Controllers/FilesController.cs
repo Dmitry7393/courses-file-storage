@@ -8,8 +8,8 @@
     using Microsoft.AspNet.Identity;
     using System.Configuration;
     using System.IO;
-    using Models;
     using CloudStorage.Services.Services.ConverterServices.Factory;
+
     /// <summary>
     /// Defines FilesController
     /// </summary>
@@ -37,7 +37,7 @@
             //List with subfolders which have to opened after adding files or folders
             ViewBag.ListSubfoldersID = new List<int>(); //treeview will be closed (folded)
 
-            return View(_fileService.GetFilesInFolderByUserID(0, User.Identity.GetUserId()));
+            return View();
         }
  
         //Returns user's files in specific folder 
@@ -45,46 +45,58 @@
         {
             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(fileSystemStructureID, User.Identity.GetUserId()));
         }
+        public PartialViewResult OpenFolder(int elementID)
+        {
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(elementID, User.Identity.GetUserId()));
+        }
 
         [HttpPost]
         public PartialViewResult UploadFile(int currentFolderID)
         {
             //transfer uploaded files to Service
+            string fileNameWithoutExtension;
             foreach (string fileName in Request.Files)
             {
+                fileNameWithoutExtension = Path.GetFileNameWithoutExtension(Request.Files[fileName].FileName);
                 _fileService.Create(new Domain.FileAggregate.FileInfo()
-                {
-                    Name = Request.Files[fileName].FileName,
-                    CreationDate = DateTime.Now,
-                    Extension = Path.GetExtension(Request.Files[fileName].FileName),
-                    OwnerId = User.Identity.GetUserId(),
-                    ParentID = currentFolderID
-                },
-                Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
+                                                                    {
+                                                                        Name = fileNameWithoutExtension,
+                                                                        CreationDate = DateTime.Now,
+                                                                        Extension = Path.GetExtension(Request.Files[fileName].FileName.ToLower()),
+                                                                        OwnerId = User.Identity.GetUserId(),
+                                                                        ParentID = currentFolderID
+                                                                    },
+                                                                    Request.Files[fileName].InputStream, Server.MapPath(getPathToUserFolder()));
             }
 
             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         //Folder will be added in table FileInfo
+        //Returns id of added folder
         [HttpPost]
-        public PartialViewResult AddFolder(string folderName, int currentFolderID)
+        public JsonResult AddFolder(string folderName, int currentFolderID)
         {
-             _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo()
-                                            {
-                                                Name = folderName,
-                                                CreationDate = DateTime.Now,
-                                                OwnerId = User.Identity.GetUserId(),
-                                                ParentID = currentFolderID
-                                            });
-            //returns partial view with model
-             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
+            int fileID = _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo()
+                                                    {
+                                                        Name = folderName,
+                                                        CreationDate = DateTime.Now,
+                                                        OwnerId = User.Identity.GetUserId(),
+                                                        ParentID = currentFolderID
+                                                    });
+            return Json(new { data = fileID });
+        }
+        //Returns preview of the current files in specific folder
+        [HttpGet] 
+        public PartialViewResult UpdateAreaWithFiles(int currentFolderID)
+        {
+            return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(currentFolderID, User.Identity.GetUserId()));
         }
         [HttpGet]
         public PartialViewResult UpdateTreeview(int currentFolderID)
         {
+            ViewBag.FolderID = currentFolderID;
             //List with subfolders which have to opened after adding files or folders
             ViewBag.ListSubfoldersID = _fileService.GetSubfoldersByFolderID(currentFolderID);
-
             return PartialView("_Treeview", _fileService.GetFilesByUserID(User.Identity.GetUserId()));
         }
         //Returns the physical path to user folder on server
@@ -92,7 +104,10 @@
         {
             return Path.Combine(ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString(), User.Identity.GetUserId());
         }
-
+        private string getPathToUser_Data()
+        {
+            return ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString();
+        }
         //Returns a thumbnail into view
         public ActionResult GetImage(int fileID)
         {
@@ -122,6 +137,7 @@
         /// </summary>
         /// <param name="id">Identifier of file.</param>
         /// <returns>File for download.</returns>
+        [HttpGet]
         public ActionResult Download(int id)
         {
             var file = this._fileService.GetFileById(id, User.Identity.GetUserId());
@@ -131,9 +147,18 @@
                 return HttpNotFound();
             }
 
-            return File(Url.Content(Server.MapPath(file.PathToFile))
-                                    , GetContentType(file.Extension)
-                                    , file.FullName);
+            if (file.Extension != null)
+            {
+                //Return file
+                return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
+                                                 , GetContentType(file.Extension)
+                                                 , file.FullName);
+            }
+            else
+            {
+                //Return archive with files and subfolders
+                return File(_fileService.GetZipArchive(Server.MapPath(getPathToUserFolder()), id, User.Identity.GetUserId()), "application/zip", file.Name + ".zip");
+            }
         }
 
 
@@ -265,6 +290,79 @@
                 default:
                     return "application/unknown";
             }
+        }
+
+
+
+        [HttpGet]
+        public PartialViewResult Info(int id = 0)
+        {
+
+            Domain.FileAggregate.FileInfo file = null;
+
+            UI.Models.AboutFileInfoModel infoModel = new UI.Models.AboutFileInfoModel();
+            try
+            {
+                // Summary:
+                //     Get the new instance of FileInfo object that will be deleted
+                file = _fileService.GetFileById(id, User.Identity.GetUserId());
+                if (file != null)
+                {
+                    infoModel.Name = file.Name;
+                    infoModel.Type = GetContentType(file.Extension);
+                    infoModel.CreateDate = file.CreationDate;
+                    if (file.ParentID == 0)
+                    {
+                        infoModel.Folder = "MyCloud";
+                    }
+                    else
+                    {
+
+                        infoModel.Folder = _fileService.GetFileById(file.ParentID, User.Identity.GetUserId()).Name;
+                    }
+                    string pathToFile = Server.MapPath(getPathToUserFolder()) + "\\" + file.Id + ".dat";
+                    System.IO.FileInfo fs = new FileInfo(pathToFile);
+                    infoModel.LastTimeChanged = fs.LastWriteTime;
+                    string unit = "";
+                    string size = GetSizeOfFile(fs.Length, out unit) + " " + unit;
+                    infoModel.Size = size;
+                    infoModel.ShareLink = file.Link;
+                    ViewData["partialModel"] = infoModel;
+
+                }
+                ViewBag.Info = infoModel;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            // Summary:
+            //     Return PartialView and using created instace of file for getting current folder
+            return PartialView("_Info");
+        }
+
+        private static string GetSizeOfFile(long lenght, out string unit)
+        {
+            double kb = 1026;
+            double mb = 1054661;
+            float gb = 1080963085.517241F;
+            string size = "";
+            if (lenght >= gb)
+            {
+                unit = "GB";
+                size = (lenght / gb).ToString();
+            }
+            else if (lenght >= mb)
+            {
+                unit = "MB";
+                size = (lenght / mb).ToString();
+            }
+            else
+            {
+                unit = "KB";
+                size = (lenght / kb).ToString();
+            }
+            return size.Substring(0, size.IndexOf(',') + 3);
         }
 	}
 }

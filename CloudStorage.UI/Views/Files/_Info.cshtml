@@ -1,0 +1,83 @@
+﻿@{
+    CloudStorage.UI.Models.AboutFileInfoModel info = (CloudStorage.UI.Models.AboutFileInfoModel)ViewData["partialModel"];
+}
+
+<div class="col-lg-3" id="info" style="background-color:white; min-height: 82vh; ">
+
+    @if (info == null)
+    {
+        <img src="~/Content/images/Info.png" alt="" style=" display: block; margin-left: auto; margin-right: auto;"><br>
+        <span class="text-center">Choose any folder or file to get their properties</span>
+    }
+    else
+    {
+        <table class="table">
+            <tbody>
+
+                @if (info.Type == string.Empty)
+                {
+                    <tr>
+                        <td>Type</td>
+
+                        <td>Folder</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>Type</td>
+                        <td>@info.Type</td>
+                    </tr>
+                    <tr>
+                        <td>Size</td>
+                        <td>@info.Size</td>
+                    </tr>
+                }
+                <tr>
+                    <td>Location</td>
+                    <td>@info.Folder</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>@info.CreateDate</td>
+                </tr>
+                <tr>
+                    <td>Last Change</td>
+                    <td>@info.LastTimeChanged</td>
+                </tr>
+                <tr>
+                    <td id="link">ShareLink</td>
+                    <td>@info.ShareLink </td>
+                </tr>
+                <tr>
+                    <td><button class="btn btn-sm btn-success" onclick="copyToClipboard('link')">ToClipboard</button></td>
+                </tr>
+
+            </tbody>
+
+
+
+        </table>
+    }
+    <script>
+        function copyToClipboard(elementId) {
+            // Create a "hidden" input
+            var aux = document.createElement("input");
+
+            // Assign it the value of the specified element
+            aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+
+            // Append it to the body
+            document.body.appendChild(aux);
+
+            // Highlight its content
+            aux.select();
+
+            // Copy the highlighted text
+            document.execCommand("copy");
+
+            // Remove it from the body
+            document.body.removeChild(aux);
+        };
+    </script>
+</div>

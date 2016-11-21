@@ -1,11 +1,36 @@
 ﻿var itemId;
 function test(obj) {
     itemId = obj;
+    $.ajax({
 
+        url: "/Files/Info",
+        type: "GET",
+        dataType: "html",
+        data: { id: itemId },
+        sucess: function (data) {
+            console.log("sucess");
+
+        }
+
+    }).done(function (data) {
+        console.log("done");
+        $('div#info').html(data);
+    });
     console.log($('input[name=' + itemId + ']').val());
     $("#" + obj).popr();
 
 };
+
+
+function download() {
+    $.ajax({
+        url: "/Files/Download",
+        type: "GET",
+        dataType: "json",
+        data: { id: itemId }
+    });
+};
+
 function del(obj) {
     var a = "123";
 
@@ -17,10 +42,8 @@ function del(obj) {
     }
 
     ).complete(function (partialViewResult) {
-
-        console.log("Done delete");
-        location.reload();
-        //$("#brows").html(partialViewResult);
+        updateTreeview($('#currentFolderID').val());
+        showFilesInFolder($('#currentFolderID').val());
     });
 
 };

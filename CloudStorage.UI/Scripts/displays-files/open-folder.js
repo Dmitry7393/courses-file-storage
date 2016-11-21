@@ -1,19 +1,15 @@
-﻿$(document).ready(function () {
-    //Show files in root folder
-    showFilesInFolder(0);
-})
-
-//Download preview in chosen folder
-function showFilesInFolder(itemID)
-{
+﻿function openFolder(itemID, extension) {
+    //set in hidden field new opened folder ID
     $("#currentFolderID").val(itemID);
     $.ajax({
-        url: '/Files/ShowUserFiles',
+        url: '/Files/OpenFolder',
         type: "POST",
-        data: { fileSystemStructureID: itemID },
+        data: { elementID: itemID },
         dataType: "html",
 
         success: function (data) {
+            //Open this new folder in Treeview
+            updateTreeview(itemID);
             //update partial view _BrowsingFiles
             $('div#block_view_files_folders').html(data);
         },

@@ -1,14 +1,19 @@
 ﻿@model List<CloudStorage.Domain.FileAggregate.FileInfo>
 
 <!--Drawing tree view-->
-    <div class="divTreeView" id="partial_view_treeview">
-        <a onclick="showFilesInFolder(0)" href="javascript:void(0);">Root folder</a>
-        <div id="scrollbar">
-            @if (Model != null && Model.Count() > 0)
-            {
-                <ul id="browser" class="filetree">
-                    @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentID, ViewBag.ListSubfoldersID)
-                </ul>
-            }
-        </div>
+<div class="divTreeView col-lg-12" id="partial_view_treeview" style="background-color:white; min-height: 82vh; ">
+    <a href="javascript:void(0);" onclick="selectItemFileInTreeview(this);showFilesInFolder(0)">Root folder</a>
+    <div id="scrollbar" class="col-lg-12">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <ul id="browser" class="filetree">
+                @Treeview.GetTreeView(Model, Model.FirstOrDefault().ParentID, ViewBag.ListSubfoldersID, ViewBag.FolderID)
+            </ul>
+        }
     </div>
+</div>
+
+<script>
+    $("#partial_view_treeview").removeClass("divTreeView col-lg-12");
+    $("#partial_view_treeview").addClass("col-lg-3");
+</script>

@@ -1,9 +1,9 @@
 ﻿
-    .divTreeView {
-        top: 25%;
-        float: left;
-        position: absolute;
-    }
+.divTreeView {
+    /*top: 10vh;
+    float: left;
+    position: absolute;*/     
+}
 
  .treeview, .treeview ul {
 	padding: 0;
@@ -12,7 +12,7 @@
 }
 
 .treeview ul {
-	background-color: white;
+	background-color: ghostwhite;
 	margin-top: 4px;
 }
 
@@ -36,12 +36,12 @@
 }
 
 .treeview a.selected {
-	background-color: #eee;
+	background-color: lightsteelblue;
 }
 
 #treecontrol { margin: 1em 0; display: none; }
 
-.treeview .hover { color: red; cursor: pointer; }
+.treeview .hover { color: black; cursor: pointer; }
 
 .treeview li { background: url(../images/treeview-default-line.gif) 0 0 no-repeat; }
 .treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }

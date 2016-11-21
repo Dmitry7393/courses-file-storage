@@ -23,6 +23,17 @@ function addFiles() {
     $('#inputUpload').trigger('click');
     document.getElementById("inputUpload").onchange = function () {
         var files = document.getElementById('inputUpload').files;
-        uploadFiles(files);
+        if (files.length > 0) {
+            //Creaing FormData
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var x = 0; x < files.length; x++) {
+                    data.append("file" + x, files[x]);
+                }
+                uploadFiles(data, $('#currentFolderID').val());
+            } else {
+                alert("Браузер не поддерживает загрузку файлов HTML5!");
+            }
+        }
     };
 }

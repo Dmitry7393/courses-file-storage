@@ -1,43 +1,60 @@
-﻿ html, body { 
-      background-color: ghostwhite;
-  
-      padding: 0;
+﻿html, body {
+    background-color: ghostwhite;
+    padding: 0;
     overflow: hidden;
- }
-        .ContextItem {
-            background-color: White;
-            color: Black;
-            font-weight: normal;
-        }
+}
 
-            .ContextItem:hover {
-                background-color: #0066FF;
-                color: White;
-                font-weight: bold;
-            }
-             .bottom-three {
-                margin-bottom: 30cm;
-             }
-             #displayingData {
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                top: 25%; 
-                left: 25%; 
-                height:100%;
-                width:100%;
-             }
-             #dropArea {
-             background-color: khaki;
-              height:100%;
-              width:100%;
-        }
-            #progressBar {
-               position: fixed;
-                bottom: 0;
-                right: 0;
-            }
-          .property-align-center {
-            text-align: center;
-        }
+.ContextItem {
+    background-color: White;
+    color: Black;
+    font-weight: normal;
+}
 
+/*#block_view_files_folders {
+    min-height: 82vh;
+    background-color: #ffd9b3;
+    border: solid 1px silver;
+}*/
+
+.ContextItem:hover {
+    background-color: #0066FF;
+    color: White;
+    font-weight: bold;
+}
+
+.bottom-three {
+    margin-bottom: 30cm;
+}
+/*#displayingData {
+    position:absolute;
+    top: 20vh;
+    left: 50vh; 
+    width: 60vw;
+    height:70vh;            
+    }
+#dropArea {
+    position: absolute;
+    background-color: khaki;
+    width: 60vw;
+    height:70vh;          
+}
+#scrollbarViewData {
+    overflow-y: scroll;
+    width: 60vw;
+    height:70vh;
+}*/
+#progressBar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.property-align-center {
+    text-align: center;
+}
+#truncateLongTexts {
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}

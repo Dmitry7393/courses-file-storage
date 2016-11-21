@@ -1,12 +1,6 @@
-﻿function uploadFiles(files) {
-    var folderID = $('#currentFolderID').val();
-    if (files.length > 0) {
-        if (window.FormData !== undefined) {
-            var data = new FormData();
-            for (var x = 0; x < files.length; x++) {
-                data.append("file" + x, files[x]);
-            }
-            var myUrl = '@Url.Action("Upload", "Files")?folderID=0';
+﻿//Upload files on server with FormData
+function uploadFiles(formData, folderID) {
+    var myUrl = '@Url.Action("Upload", "Files")?folderID=0';
             $.ajax({
                 xhr: function () {
                     var xhr = new window.XMLHttpRequest();
@@ -27,18 +21,14 @@
                 contentType: false,
                 processData: false,
                 dataType: 'html',
-                data: data,
+                data: formData,
                 success: function (data) {
                     $('div#block_view_files_folders').html(data);
-                    updateTreeview(folderID);
-                   
+                    updateTreeview($('#currentFolderID').val());
+                    showFilesInFolder($('#currentFolderID').val());
                 },
                 error: function (xhr, status, p3) {
                     alert(xhr.responseText);
                 }
             });
-        } else {
-            alert("Браузер не поддерживает загрузку файлов HTML5!");
-        }
-    }
 }

@@ -2,26 +2,33 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2> </h2>
 <link href="@Url.Content("~/Content/style-browsing-files.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/dialog/dialog.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/dialog/jquery-ui.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/Treeview/jquery.treeview.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/Treeview/treeview-scrollbar.css")" rel="stylesheet" type="text/css" />
 
-<script src="~/Scripts/scripts_uploading_files/upload-file-ajax.js"></script>
-<script src="~/Scripts/scripts_uploading_files/right-click-menu.js"></script>
-<script src="~/Scripts/scripts_uploading_files/drag-and-drop.js"></script>
-
-<script src="~/Scripts/scripts_uploading_files/update-treeview.js"></script>
-<script src="~/Scripts/scripts_uploading_files/add-folder.js"></script>
 <script src="~/Scripts/scripts_uploading_files/dialog.js"></script>
+<script src="~/Scripts/scripts_uploading_files/update-treeview.js"></script>
+<script src="~/Scripts/scripts_uploading_files/update-displaying-area.js"></script>
+<script src="~/Scripts/scripts_uploading_files/right-click-menu.js"></script>
 
-<script src="~/Scripts/displays-files/show-files-in-folder.js"></script>
+<script src="~/Scripts/scripts_uploading_files/upload-folder.js"></script>
+<script src="~/Scripts/scripts_uploading_files/upload-file-ajax.js"></script>
+<script src="~/Scripts/scripts_uploading_files/create-folder.js"></script>
 
+<!--Drag-and-drop files and folders-->
+<script src="~/Scripts/drag-and-drop/prevent-default.js"></script>
+<script src="~/Scripts/drag-and-drop/create-formdata.js"></script>
+
+<!--Scripts for treeview-->
 <script src="~/Scripts/scripts-treeview/jquery.treeview.js"></script>
 <script src="~/Scripts/scripts-treeview/treeview.js"></script>
+<script src="~/Scripts/scripts-treeview/select-item.js"></script>
+<script src="~/Scripts/displays-files/show-files-in-folder.js"></script>
+<script src="~/Scripts/displays-files/open-folder.js"></script>
+
+<script src="~/Scripts/drag-and-drop/file-structure-tree.js"></script>
 
 
 <script src="~/Scripts/scripts-redacting/delete-edit.js"></script>
@@ -31,11 +38,12 @@
 <script src="../popr/popr.min.js"></script>
 
 <input type="hidden" id="currentFolderID" name="currentFolderID" value="0" />
+<input type="hidden" id="uploadFolderRootID" name="uploadFolderRootID" value="0" />
 
 @Html.Hidden("MyURL", @Url.Action("Upload", "Files", new { id = 0 }))
 <input type="file" id="inputUpload" style="display: none" name="files" class="multiple" multiple>
 
-    <!--custom right-click menu that allows to add files and folders-->
+<!--custom right-click menu that allows to add files and folders-->
 <div style="display:none; " id="contextMenu">
     <table border="0" cellpadding="0" cellspacing="0"
            style="border: thin solid #808080; cursor: default;" width="100px"
@@ -58,20 +66,16 @@
     </table>
 </div>
 
-<!--Dialog box-->
-<div class="containerDialog">
-    <div id="dialog" title="New folder">
-        <form action="" method="post" onsubmit="return false">
-            <label>Name:</label>
-            <input id="name" name="name" type="text">
-            <input id="submit" type="submit" value="Create">
-        </form>
+
+@Html.Partial("_DialogBox")
+
+<div class="row" style="border: solid 1px silver;">
+    <!--Displays file structure with Treeview-->
+    @Html.Partial("_Treeview")
+
+    <!--Displays in area icons and names of files-->
+    <div id="dropzone">
+        @Html.Partial("_BrowsingFiles", Model)
     </div>
+    @Html.Partial("_Info")
 </div>
-
-
-<!--Displays file structure with Treeview-->
-@Html.Partial("_Treeview");
-
-<!--Displays in area icons and names of files-->
-@Html.Partial("_BrowsingFiles", Model);
