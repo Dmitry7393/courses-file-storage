@@ -23,5 +23,9 @@
         List<FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID);
 
         List<int> GetSubFolders(int folderID);
+
+        List<int> GetNestedFolders(int folderID);
+
+        List<int> GetSubFoldersInCertainFolder(int folderID, int rootDirectoryID);
     }
 }

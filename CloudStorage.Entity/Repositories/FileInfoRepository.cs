@@ -110,16 +110,16 @@
         }
 
         // Recursive search subfolders using current folderID
-        // search stops when root directory (0) have been reached
-        public IEnumerable<int> FindSubFoldersID(CloudStorageDbContext context, int id, bool isIdAdded)
+        // search stops when root directory=rootDirID have been reached
+        public IEnumerable<int> FindSubFoldersID(CloudStorageDbContext context, int id, int rootDirID, bool isIdAdded)
         {
             if (isIdAdded)
                 yield return id;
             int parentID = context.Files.Where(u => u.Id == id).Select(field => field.ParentID).SingleOrDefault();
-            if (parentID != 0)
+            if (parentID != rootDirID)
             {
                 yield return parentID;
-                foreach (int n in FindSubFoldersID(context, parentID, false))
+                foreach (int n in FindSubFoldersID(context, parentID, rootDirID, false))
                 {
                    yield return n;
                 }
@@ -131,7 +131,25 @@
         {
             using (var context = CreateContext())
             {
-                return FindSubFoldersID(context, folderID, true).ToList();
+                return FindSubFoldersID(context, folderID, 0, true).ToList();
+            }
+        }
+
+        //Returns list with subfolders in folder
+        public List<int> GetNestedFolders(int folderID)
+        {
+            using (var context = CreateContext())
+            {
+                //Select nested folders from specific folder
+                return context.Files.Where(u => u.ParentID == folderID).Where(s => s.Extension == null).Select(field => field.Id).ToList();
+            }
+        }
+        //Returns list with ID subfolders in downloaded folder
+        public List<int> GetSubFoldersInCertainFolder(int folderID, int rootDirectoryID)
+        {
+            using (var context = CreateContext())
+            {
+                return FindSubFoldersID(context, folderID, rootDirectoryID, true).ToList();
             }
         }
     }

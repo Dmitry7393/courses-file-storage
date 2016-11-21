@@ -54,11 +54,13 @@
         public PartialViewResult UploadFile(int currentFolderID)
         {
             //transfer uploaded files to Service
+            string fileNameWithoutExtension;
             foreach (string fileName in Request.Files)
             {
+                fileNameWithoutExtension = Path.GetFileNameWithoutExtension(Request.Files[fileName].FileName);
                 _fileService.Create(new Domain.FileAggregate.FileInfo()
                                                                     {
-                                                                        Name = Request.Files[fileName].FileName,
+                                                                        Name = fileNameWithoutExtension,
                                                                         CreationDate = DateTime.Now,
                                                                         Extension = Path.GetExtension(Request.Files[fileName].FileName.ToLower()),
                                                                         OwnerId = User.Identity.GetUserId(),
@@ -74,7 +76,6 @@
         [HttpPost]
         public JsonResult AddFolder(string folderName, int currentFolderID)
         {
-            System.Diagnostics.Debug.WriteLine("Add Folder on server");
             int fileID = _fileService.AddNewFolder(new Domain.FileAggregate.FileInfo()
                                                     {
                                                         Name = folderName,
@@ -82,7 +83,6 @@
                                                         OwnerId = User.Identity.GetUserId(),
                                                         ParentID = currentFolderID
                                                     });
-            System.Diagnostics.Debug.WriteLine("return " + fileID);
             return Json(new { data = fileID });
         }
         //Returns preview of the current files in specific folder
@@ -104,7 +104,10 @@
         {
             return Path.Combine(ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString(), User.Identity.GetUserId());
         }
-
+        private string getPathToUser_Data()
+        {
+            return ConfigurationManager.AppSettings[PATH_USER_FOLDER].ToString();
+        }
         //Returns a thumbnail into view
         public ActionResult GetImage(int fileID)
         {
@@ -134,6 +137,7 @@
         /// </summary>
         /// <param name="id">Identifier of file.</param>
         /// <returns>File for download.</returns>
+        [HttpGet]
         public ActionResult Download(int id)
         {
             var file = this._fileService.GetFileById(id, User.Identity.GetUserId());
@@ -143,9 +147,18 @@
                 return HttpNotFound();
             }
 
-            return File(Url.Content(Server.MapPath(file.PathToFile))
-                                    , GetContentType(file.Extension)
-                                    , file.FullName);
+            if (file.Extension != null)
+            {
+                //Return file
+                return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
+                                                 , GetContentType(file.Extension)
+                                                 , file.FullName);
+            }
+            else
+            {
+                //Return archive with files and subfolders
+                return File(_fileService.GetZipArchive(Server.MapPath(getPathToUserFolder()), id, User.Identity.GetUserId()), "application/zip", file.Name + ".zip");
+            }
         }
 
 
