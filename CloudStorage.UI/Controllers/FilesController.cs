@@ -132,6 +132,7 @@
             }
             return File(Path.Combine(dir, "icon-file.png"), GetContentType(file.Extension));
         }
+        
         /// <summary>
         /// Download file.
         /// </summary>
@@ -163,8 +164,37 @@
             }
         }
 
+        /// <summary>
+        /// Download file.
+        /// </summary>
+        /// <param name="link">Link of file.</param>
+        /// <returns>File for download.</returns>
+        [AllowAnonymous]
+        public ActionResult Sharing(string link)
+        {
+            var file = this._fileService.GetFileByLink(link);
 
+            if (file == null)
+            {
+                return HttpNotFound();
+            }
 
+            if (file.Extension != null)
+            {
+                string path = Path.Combine(getPathToUser_Data(), file.PathToFile);
+
+                //Return file
+                return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
+                                                 , GetContentType(file.Extension)
+                                                 , file.FullName);
+            }
+            else
+            {
+                //Return archive with files and subfolders
+                return File(_fileService.GetZipArchive(Server.MapPath(getPathToUserFolder()), file.Id, file.OwnerId), "application/zip", file.Name + ".zip");
+            }
+        }
+        
         // Summary
         //  Redact text file
         //
@@ -264,10 +294,7 @@
             return PartialView("_BrowsingFiles", _fileService.GetFilesInFolderByUserID(file.ParentID, User.Identity.GetUserId()));
 
         }
-
-
-
-
+        
         /// <summary>
         /// Get type of content that depends on of the file extension.
         /// </summary>
@@ -277,15 +304,15 @@
         {
             switch (extension)
             {
-                case "txt":
+                case ".txt":
                     return "text/plain";
-                case "jpeg":
+                case ".jpeg":
                     return "image/pneg";
-                case "jpg":
+                case ".jpg":
                     return "image/jpg";
-                case "png":
+                case ".png":
                     return "image/png";
-                case "pdf":
+                case ".pdf":
                     return "application/pdf";
                 case ".flv":
                     return "video/x-flv";
@@ -294,12 +321,9 @@
             }
         }
 
-
-
         [HttpGet]
         public PartialViewResult Info(int id = 0)
         {
-
             Domain.FileAggregate.FileInfo file = null;
 
             UI.Models.AboutFileInfoModel infoModel = new UI.Models.AboutFileInfoModel();
@@ -319,16 +343,20 @@
                     }
                     else
                     {
-
                         infoModel.Folder = _fileService.GetFileById(file.ParentID, User.Identity.GetUserId()).Name;
                     }
                     string pathToFile = Server.MapPath(getPathToUserFolder()) + "\\" + file.Id + ".dat";
                     System.IO.FileInfo fs = new FileInfo(pathToFile);
                     infoModel.LastTimeChanged = fs.LastWriteTime;
                     string unit = "";
-                    string size = GetSizeOfFile(fs.Length, out unit) + " " + unit;
-                    infoModel.Size = size;
-                    infoModel.ShareLink = file.Link;
+
+                    if (file.Extension != null)
+                    {
+                        string size = GetSizeOfFile(fs.Length, out unit) + " " + unit;
+                        infoModel.Size = size;
+                    }
+                    
+                    infoModel.ShareLink = Request.Url.GetLeftPart(UriPartial.Authority) + "/Files/Sharing?link=" + file.Link;
                     ViewData["partialModel"] = infoModel;
 
                 }

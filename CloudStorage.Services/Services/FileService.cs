@@ -7,12 +7,17 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text;
 
     /// <summary>
     /// Defines an implementation of <see cref="IFileService"/> contract.
     /// </summary>
     public class FileService : IFileService
     {
+        private const int LINK_SIZE = 30;
+        private const string CHARS
+             = "%!abcdefghijklmnopqrstuvwxyz1234567890?ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
+
         private readonly IFileInfoRepository _fileInfoRepository;
 
         /// <summary>
@@ -30,6 +35,8 @@
         /// <param name="file">File to create.</param>
         public void Create(Domain.FileAggregate.FileInfo file, Stream fileStream, string pathToUserFolder)
         {
+            file.Link = this.GenerateLink();
+
             //Adding information about file to database using FileInfoRepository
             //and return fileID of added file
             int fileID = _fileInfoRepository.Add(file);
@@ -44,11 +51,18 @@
                 Write(fileStream, destination);
             
         }
-         public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
+        
+        public List<Domain.FileAggregate.FileInfo> GetFilesByUserID(string userId)
         {
             //This list will be returned to view Treeview.cshtml
             return _fileInfoRepository.GetFilesByUserId(userId);
         }
+
+        public Domain.FileAggregate.FileInfo GetFileByLink(string link)
+        {
+            return _fileInfoRepository.GetFileByLink(link);
+        }
+
         public List<Domain.FileAggregate.FileInfo> GetFilesInFolderByUserID(int currentFolder, string userID)
         {
              return _fileInfoRepository.GetFilesInFolderByUserID(currentFolder, userID);
@@ -60,6 +74,7 @@
         }
         public int AddNewFolder(Domain.FileAggregate.FileInfo folder)
         {
+            folder.Link = this.GenerateLink();
             return _fileInfoRepository.Add(folder);
         }
 
@@ -140,6 +155,7 @@
             outputStream.Position = 0;
             return outputStream;
         }
+
         //Recursive search of files in subdirectories.
         //Adding all files and folders in zip archive 
         public void FindFiles(ZipFile zip, int id, string userId, string pathToUserFolder, string pathInArchive, int rootDirID)
@@ -173,6 +189,20 @@
                     FindFiles(zip, item, userId, pathToUserFolder, pathFolderInZip, rootDirID);
                 }
             }
+        }
+
+        private string GenerateLink()
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < LINK_SIZE; i++)
+            {
+                int index = random.Next(LINK_SIZE);
+                builder.Append(CHARS[index]);
+            }
+
+            return builder.ToString();
         }
     }
 }

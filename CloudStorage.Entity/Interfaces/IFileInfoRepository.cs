@@ -16,6 +16,8 @@
 
         FileInfo GetFileById(int id);
 
+        FileInfo GetFileByLink(string link);
+
         FileInfo GetFileById_UserId(int fileId, string userId);
 
         List<FileInfo> GetFilesByUserId(string iserId);

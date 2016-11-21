@@ -72,6 +72,20 @@
         }
 
         /// <summary>
+        /// Get information about file by link.
+        /// </summary>
+        /// <param name="link">Identifier of file.</param>
+        /// <returns>Information about file.</returns>
+        public FileInfo GetFileByLink(string link)
+        {
+            using (var context = CreateContext())
+            {
+                FileInfo file = context.Files.Where(f => f.Link == link).SingleOrDefault();
+                return file;
+            }
+        }
+
+        /// <summary>
         /// Get information about file by file id and user id.
         /// </summary>
         /// <param name="fileId">Identifier of file.</param>
