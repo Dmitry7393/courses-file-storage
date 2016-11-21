@@ -1,6 +1,7 @@
 ﻿var itemId;
 function test(obj) {
     itemId = obj;
+
     $.ajax({
 
         url: "/Files/Info",
@@ -23,10 +24,11 @@ function test(obj) {
 
 
 
+
+
 function downloadFile(obj) {
     window.location = '/Files/Download?id=' + itemId;
 }
-
 
 function del(obj) {
     var a = "123";

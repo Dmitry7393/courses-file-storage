@@ -150,6 +150,7 @@
             if (file.Extension != null)
             {
                 string path = Path.Combine(getPathToUser_Data(), file.PathToFile);
+
                 //Return file
                 return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
                                                  , GetContentType(file.Extension)
