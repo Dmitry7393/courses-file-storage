@@ -149,6 +149,8 @@
 
             if (file.Extension != null)
             {
+                string path = Path.Combine(getPathToUser_Data(), file.PathToFile);
+
                 //Return file
                 return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
                                                  , GetContentType(file.Extension)
@@ -290,6 +292,79 @@
                 default:
                     return "application/unknown";
             }
+        }
+
+
+
+        [HttpGet]
+        public PartialViewResult Info(int id = 0)
+        {
+
+            Domain.FileAggregate.FileInfo file = null;
+
+            UI.Models.AboutFileInfoModel infoModel = new UI.Models.AboutFileInfoModel();
+            try
+            {
+                // Summary:
+                //     Get the new instance of FileInfo object that will be deleted
+                file = _fileService.GetFileById(id, User.Identity.GetUserId());
+                if (file != null)
+                {
+                    infoModel.Name = file.Name;
+                    infoModel.Type = GetContentType(file.Extension);
+                    infoModel.CreateDate = file.CreationDate;
+                    if (file.ParentID == 0)
+                    {
+                        infoModel.Folder = "MyCloud";
+                    }
+                    else
+                    {
+
+                        infoModel.Folder = _fileService.GetFileById(file.ParentID, User.Identity.GetUserId()).Name;
+                    }
+                    string pathToFile = Server.MapPath(getPathToUserFolder()) + "\\" + file.Id + ".dat";
+                    System.IO.FileInfo fs = new FileInfo(pathToFile);
+                    infoModel.LastTimeChanged = fs.LastWriteTime;
+                    string unit = "";
+                    string size = GetSizeOfFile(fs.Length, out unit) + " " + unit;
+                    infoModel.Size = size;
+                    infoModel.ShareLink = file.Link;
+                    ViewData["partialModel"] = infoModel;
+
+                }
+                ViewBag.Info = infoModel;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            // Summary:
+            //     Return PartialView and using created instace of file for getting current folder
+            return PartialView("_Info");
+        }
+
+        private static string GetSizeOfFile(long lenght, out string unit)
+        {
+            double kb = 1026;
+            double mb = 1054661;
+            float gb = 1080963085.517241F;
+            string size = "";
+            if (lenght >= gb)
+            {
+                unit = "GB";
+                size = (lenght / gb).ToString();
+            }
+            else if (lenght >= mb)
+            {
+                unit = "MB";
+                size = (lenght / mb).ToString();
+            }
+            else
+            {
+                unit = "KB";
+                size = (lenght / kb).ToString();
+            }
+            return size.Substring(0, size.IndexOf(',') + 3);
         }
 	}
 }

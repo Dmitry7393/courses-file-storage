@@ -76,11 +76,13 @@
         [NotMapped]
         public string PathToFile
         {
-            get 
+            get
             {
                 return Path.Combine(this.OwnerId, this.Id + "." + BASE_EXTENSION);
             }
         }
+        [NotMapped]
+        public string Link { get; set; }
 
         /// <summary>
         /// Gets a value indicating where full name of file including extension.

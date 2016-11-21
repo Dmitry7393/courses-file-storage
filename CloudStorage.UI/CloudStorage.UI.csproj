@@ -194,6 +194,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AboutFileInfoModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -213,6 +214,7 @@
     <Content Include="Content\images\file.gif" />
     <Content Include="Content\images\folder-closed.gif" />
     <Content Include="Content\images\folder.gif" />
+    <Content Include="Content\images\Info.png" />
     <Content Include="Content\images\minus.gif" />
     <Content Include="Content\images\plus.gif" />
     <Content Include="Content\images\treeview-black-line.gif" />
@@ -296,6 +298,7 @@
     <Content Include="Views\Files\Index.cshtml" />
     <Content Include="Views\Files\_Treeview.cshtml" />
     <Content Include="Views\Files\_DialogBox.cshtml" />
+    <Content Include="Views\Files\_Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

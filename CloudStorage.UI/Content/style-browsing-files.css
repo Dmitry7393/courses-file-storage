@@ -1,23 +1,31 @@
-﻿ html, body { 
-      background-color: ghostwhite;
-      padding: 0;
-      overflow: hidden;
- }
+html, body {
+    background-color: ghostwhite;
+    padding: 0;
+    overflow: hidden;
+}
+
 .ContextItem {
     background-color: White;
     color: Black;
     font-weight: normal;
 }
 
+/*#block_view_files_folders {
+    min-height: 82vh;
+    background-color: #ffd9b3;
+    border: solid 1px silver;
+}*/
+
 .ContextItem:hover {
     background-color: #0066FF;
     color: White;
     font-weight: bold;
 }
+
 .bottom-three {
     margin-bottom: 30cm;
 }
-#displayingData {
+/*#displayingData {
     position:absolute;
     top: 20vh;
     left: 50vh; 
@@ -34,13 +42,19 @@
     overflow-y: scroll;
     width: 60vw;
     height:70vh;
-}
+}*/
 #progressBar {
     position: absolute;
     bottom: 0;
     right: 0;
 }
+
 .property-align-center {
     text-align: center;
 }
-
+#truncateLongTexts {
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}

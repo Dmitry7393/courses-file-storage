@@ -1,13 +1,35 @@
 ﻿var itemId;
 function test(obj) {
     itemId = obj;
+
+    $.ajax({
+
+        url: "/Files/Info",
+        type: "GET",
+        dataType: "html",
+        data: { id: itemId },
+        sucess: function (data) {
+            console.log("sucess");
+
+        }
+
+    }).done(function (data) {
+        console.log("done");
+        $('div#info').html(data);
+    });
     console.log($('input[name=' + itemId + ']').val());
     $("#" + obj).popr();
 
 };
+
+
+
+
+
 function downloadFile(obj) {
     window.location = '/Files/Download?id=' + itemId;
 }
+
 function del(obj) {
     var a = "123";
 

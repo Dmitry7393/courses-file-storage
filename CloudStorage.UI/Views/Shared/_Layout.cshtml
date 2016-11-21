@@ -4,24 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Cloud Storage</title>
-
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
- 
+
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-ui.js"></script>
     <script src="~/Scripts/jquery-ui.min.js"></script>
-
 </head>
-<body>
-
+<body style="display:block; overflow-y:scroll; height:95vh">
     <!-- Modal POP UP REDACTING WINDOW -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog modal-lg">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -40,30 +36,47 @@
         </div>
     </div>
 
-
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Cloud Storage", "Index", "Files", null, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse">
-                @Html.Partial("_LoginPartial")
+    <nav class="navbar navbar-default">
+        <div class="navbar-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Cloud Storage", "Index", "Files", null, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse">
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
         </div>
-    </div>
-    
-
-    <div class="container body-content">
+    </nav>
+    <div class="container-fluid body-content">
         @RenderBody()
     </div>
-    
+
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
+    <script>
+        //        var scrollHeight = Math.max(
+        //  document.body.scrollHeight, document.documentElement.scrollHeight,
+        //  document.body.offsetHeight, document.documentElement.offsetHeight,
+        //  document.body.clientHeight, document.documentElement.clientHeight
+        //);
+        //$(document).ready(function () {
+        function Test() {
+            console.log("TEST");
+            var width = document.documentElement.clientWidth;
+            if (width < 1255) {
+                console.log(document.documentElement.clientHeight);
+                $("body").css("display: block; height: 600px; overflow-y: scroll;");
+            }
+        };
+
+        //alert('Client Vertical: ' + document.documentElement.clientHeight + 'Client Vertical: ' + document.documentElement.clientWidth);
+    </script>
 </body>
 </html>

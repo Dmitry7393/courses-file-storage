@@ -2,50 +2,60 @@
 @model List<CloudStorage.Domain.FileAggregate.FileInfo>
 
 
-<div id="block_view_files_folders">
-    <div id="displayingData">
-        <input type="button" value="Upload files" onclick="addFiles();" />
-        <input type="button" value="Add folder" onclick="createFolder();" />
-        <div onmousedown="HideMenu('contextMenu');"
-             onmouseup="HideMenu('contextMenu');"
-             oncontextmenu="ShowMenu('contextMenu',event);"
-             class="bottom-three"
-             id="dropArea">
-            <div id="scrollbarViewData">
-                @if (Model != null)
+@*<div id="block_view_files_folders" class="col-lg-8">
+    <div class="row">
+        <div id="displayingData">*@
+<div class="col-lg-12" id="block_view_files_folders" style="min-height: 82vh; background-color: #e0ebeb;">
+    <div class="row">
+        <div class="btn-group">
+            <input class="btn btn-success" type="button" value="Upload files" onclick="addFiles();" />
+            <input class="btn btn-success" type="button" value="Add folder" onclick="createFolder()" />
+        </div>
+    </div>
+
+
+
+    <div class="bottom-three col-lg-12" id="dropArea">
+        <div id="scrollbarViewData">
+            @if (Model != null)
+            {
+                foreach (var file in Model)
                 {
-                    foreach (var file in Model)
-                    {
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center popr" id="@file.Id" onclick="test(@file.Id)" data-id="1">
-                            <input hidden name="@file.Id" value="@file.Extension" />
-                                @if (file.Extension == null)
-                                {
-                                    <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' ondblclick="openFolder('@file.Id')" width="60" height="60" />
-                                }
-                                else
-                                {
-                                    <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' width="60" height="60" />
-                                }
-                           <br />
-                            <div id="truncateLongTexts">
-                                @file.Name
-                            </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 property-align-center popr" id="@file.Id" onclick="test(@file.Id)" data-id="1">
+                        <input hidden name="@file.Id" value="@file.Extension" />
+                        @if (file.Extension == null)
+                        {
+                            <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' ondblclick="openFolder('@file.Id')" width="60" height="60" />
+                        }
+                        else
+                        {
+                            <img src='@Url.Action("GetImage", "Files", new {fileID = file.Id})' width="60" height="60" />
+                        }
+                        <br />
+                        <div id="truncateLongTexts">
+                            @file.Name
                         </div>
-                    }
+                    </div>
                 }
-                
-                <div class="popr-box" data-box-id="1">
-                    <div class="popr-item " id="edit" onclick="downloadFile('edit')">Download</div>
-                    <div class="popr-item " id="edit" onclick="redact('edit')">Redact</div>
-                    <div class="popr-item label-danger" id="delete" onclick="del('edit')">Delete</div>
-                </div>
+            }
+
+            <div class="popr-box" data-box-id="1">
+                <div class="popr-item label-primary" id="edit" onclick="redact('edit')">Redact</div>
+                <div class="popr-item label-success" id="edit" onclick="downloadFile('edit')">Download</div>
+                <div class="popr-item label-danger" id="delete" onclick="del('edit')">Delete</div>
             </div>
-            <div id="progressBar">
-                <progress value="0" max="100" id="progresBar">
-                    Текст
-                </progress>
-            </div>
+        </div>
+
+    </div>
+    <div class="row" id="progressBar" style="position: absolute; bottom:0px; right:0px;">
+        <div class="col-lg-12">
+            <progress value="0" max="100" id="progresBar">
+                Текст
+            </progress>
         </div>
     </div>
 </div>
-
+<script>
+    $("#block_view_files_folders").removeClass("col-lg-12");
+    $("#block_view_files_folders").addClass("col-lg-6");
+</script>

@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2> </h2>
 <link href="@Url.Content("~/Content/style-browsing-files.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/dialog/dialog.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/dialog/jquery-ui.css")" rel="stylesheet" type="text/css" />
@@ -45,7 +43,7 @@
 @Html.Hidden("MyURL", @Url.Action("Upload", "Files", new { id = 0 }))
 <input type="file" id="inputUpload" style="display: none" name="files" class="multiple" multiple>
 
-    <!--custom right-click menu that allows to add files and folders-->
+<!--custom right-click menu that allows to add files and folders-->
 <div style="display:none; " id="contextMenu">
     <table border="0" cellpadding="0" cellspacing="0"
            style="border: thin solid #808080; cursor: default;" width="100px"
@@ -67,12 +65,17 @@
         </tr>
     </table>
 </div>
-@Html.Partial("_DialogBox");
 
-<!--Displays file structure with Treeview-->
-@Html.Partial("_Treeview");
 
-<div id="dropzone">
+@Html.Partial("_DialogBox")
+
+<div class="row" style="border: solid 1px silver;">
+    <!--Displays file structure with Treeview-->
+    @Html.Partial("_Treeview")
+
     <!--Displays in area icons and names of files-->
-    @Html.Partial("_BrowsingFiles", Model);
+    <div id="dropzone">
+        @Html.Partial("_BrowsingFiles", Model)
+    </div>
+    @Html.Partial("_Info")
 </div>

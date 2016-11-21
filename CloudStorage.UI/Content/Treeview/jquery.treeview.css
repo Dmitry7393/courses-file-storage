@@ -1,8 +1,9 @@
 ﻿
 .divTreeView {
-    top: 10vh;
+    /*top: 10vh;
     float: left;
-    position: absolute;     
+    position: absolute;*/     
+
 }
 
  .treeview, .treeview ul {

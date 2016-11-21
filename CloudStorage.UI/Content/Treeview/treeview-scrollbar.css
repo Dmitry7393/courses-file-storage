@@ -1,5 +1,5 @@
-﻿#scrollbar { 
- overflow:auto;
-  width: 30vh;
-  height:60vh;
+﻿#scrollbar {
+    overflow: auto;
+    width: 40vh;
+    height: 60vh;
 }
