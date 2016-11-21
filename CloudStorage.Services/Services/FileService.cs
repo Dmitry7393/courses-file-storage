@@ -3,6 +3,7 @@
     using CloudStorage.Domain.FileAggregate;
     using CloudStorage.Entity.Interfaces;
     using CloudStorage.Services.Interfaces;
+    using Ionic.Zip;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -124,6 +125,54 @@
         {
             string path = Path.Combine(pathToUserFolder, fileID.ToString() + ".dat");
             return File.ReadAllBytes(path);
+        }
+
+        //Returns archive with nested files and folders
+        public MemoryStream GetZipArchive(string pathToUserFolder, int folderID, string userID)
+        {
+            var outputStream = new MemoryStream();
+            var folderFile = GetFileById(folderID, userID);
+            using (var zip = new ZipFile())
+            {
+                FindFiles(zip, folderID, userID, pathToUserFolder, folderFile.Name);
+                zip.Save(outputStream);
+            }
+            outputStream.Position = 0;
+            return outputStream;
+        }
+        //Recursive search of files in subdirectories.
+        //Adding all files and folders in zip archive 
+        public void FindFiles(ZipFile zip, int id, string userId, string pathToUserFolder, string pathInArchive)
+        {
+            var nestedFolders = _fileInfoRepository.GetNestedFolders(id);
+            var nestedFiles = _fileInfoRepository.GetFilesInFolderByUserID(id, userId);
+
+            //Adding current directory in zip file
+            zip.AddDirectoryByName(pathInArchive);
+            foreach (var item in nestedFiles)
+            {
+                //Add file into zip archive with the actual name
+                if (item.Extension != null)
+                {
+                    var e = zip.AddFile(Path.Combine(pathToUserFolder, item.Id + ".dat"), pathInArchive);
+                    e.FileName = Path.Combine(pathInArchive, item.Name + item.Extension);
+                }
+            }
+            if (nestedFolders != null)
+            {
+                foreach (var item in nestedFolders)
+                {
+                    //Getting path in subfolders
+                    List<int> listSubFolders = _fileInfoRepository.GetSubFolders(item);
+                    listSubFolders.Reverse();
+                    string pathFolderInZip = "";
+                    foreach (var fileid in listSubFolders)
+                    {
+                        pathFolderInZip = Path.Combine(pathFolderInZip, GetFileById(fileid, userId).Name);
+                    }
+                    FindFiles(zip, item, userId, pathToUserFolder, pathFolderInZip);
+                }
+            }
         }
     }
 }

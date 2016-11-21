@@ -134,5 +134,15 @@
                 return FindSubFoldersID(context, folderID, true).ToList();
             }
         }
+
+        //Returns list with subfolders in folder
+        public List<int> GetNestedFolders(int folderID)
+        {
+            using (var context = CreateContext())
+            {
+                //Select nested folders from specific folder
+                return context.Files.Where(u => u.ParentID == folderID).Where(s => s.Extension == null).Select(field => field.Id).ToList();
+            }
+        }
     }
 }

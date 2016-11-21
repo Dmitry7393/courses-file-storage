@@ -148,9 +148,19 @@
             {
                 return HttpNotFound();
             }
-            return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
-                                                , GetContentType(file.Extension)
-                                                , file.FullName);
+
+            if (file.Extension != null)
+            {
+                //Return file
+                return File(Url.Content(Path.Combine(getPathToUser_Data(), file.PathToFile))
+                                                 , GetContentType(file.Extension)
+                                                 , file.FullName);
+            }
+            else
+            {
+                //Return archive with files and subfolders
+                return File(_fileService.GetZipArchive(Server.MapPath(getPathToUserFolder()), id, User.Identity.GetUserId()), "application/zip", file.Name + ".zip");
+            }
         }
 
 

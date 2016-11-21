@@ -26,5 +26,7 @@
         List<int> GetSubfoldersByFolderID(int folderID);
 
         byte[] GetImageBytes(int fileID, string pathToUserFolder);
+
+        MemoryStream GetZipArchive(string pathToUserFolder, int folderID, string userID);
     }
 }
