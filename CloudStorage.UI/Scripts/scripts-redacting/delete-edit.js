@@ -22,14 +22,11 @@ function test(obj) {
 };
 
 
-function download() {
-    $.ajax({
-        url: "/Files/Download",
-        type: "GET",
-        dataType: "json",
-        data: { id: itemId }
-    });
-};
+
+function downloadFile(obj) {
+    window.location = '/Files/Download?id=' + itemId;
+}
+
 
 function del(obj) {
     var a = "123";
