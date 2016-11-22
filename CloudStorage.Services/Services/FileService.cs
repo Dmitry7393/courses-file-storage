@@ -19,7 +19,7 @@
              = "%!abcdefghijklmnopqrstuvwxyz1234567890?ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
 
         private readonly IFileInfoRepository _fileInfoRepository;
-
+        private const string BASE_EXTENSION = ".dat";
         /// <summary>
         /// Initializes a new instance of the <see cref="FileService"/> class.
         /// </summary>
@@ -82,37 +82,34 @@
         /// Deletes file by its identifier.
         /// </summary>
         /// <param name="id">Identifier of file.</param>
-        public void Delete(int id, string userId)
+        public void Delete(int id, string userId, string pathToUserFolder)
         {
-            // NOTE
-            // 
-            // For correct deleting file from server need send a Server.MapPath
-
-            var file = _fileInfoRepository.GetFileById(id);
-            if (file.Extension != null)
+            var nestedFolders = _fileInfoRepository.GetNestedFolders(id);
+            if (nestedFolders != null)
             {
-                _fileInfoRepository.Remove(id);
-            }
-            else
-            {
-                //this.GetFilesInFolderByUserID();
-                var nestedFolders = this.GetSubfoldersByFolderID(id);
-                var nestedFiles = _fileInfoRepository.GetFilesInFolderByUserID(id, userId);
-                foreach (var item in nestedFiles)
+                foreach (var item in nestedFolders)
                 {
-                    _fileInfoRepository.Remove(item.Id);
+                     Delete(item, userId, pathToUserFolder);
                 }
-                if (nestedFolders != null)
+                var nestedFiles = _fileInfoRepository.GetFilesInFolderByUserID(id, userId);
+                foreach (var itemFile in nestedFiles)
                 {
-                    foreach (var item in nestedFolders)
+                    if (itemFile.Extension != null)
                     {
-                        Delete(item, userId);
+                        RemoveFileFromServer(pathToUserFolder, itemFile.Id);
+                        _fileInfoRepository.Remove(itemFile.Id);
                     }
                 }
+                _fileInfoRepository.Remove(id);
             }
-
         }
-
+        private void RemoveFileFromServer(string pathToUserFolder, int fileID)
+        {
+            if (File.Exists(Path.Combine(pathToUserFolder, fileID+BASE_EXTENSION)))
+            {
+                File.Delete(Path.Combine(pathToUserFolder, fileID+BASE_EXTENSION));
+            }
+        }
         /// <summary>
         /// Get information about file by id.
         /// </summary>
