@@ -60,9 +60,14 @@
         public string OwnerId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating location of file
+        /// Gets or sets a value indicating where location of file.
         /// </summary>
         public int ParentID { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where link of file.
+        /// </summary>
+        public string Link { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where users.
@@ -81,8 +86,6 @@
                 return Path.Combine(this.OwnerId, this.Id + "." + BASE_EXTENSION);
             }
         }
-        [NotMapped]
-        public string Link { get; set; }
 
         /// <summary>
         /// Gets a value indicating where full name of file including extension.

@@ -27,6 +27,8 @@
 
         byte[] GetImageBytes(int fileID, string pathToUserFolder);
 
+        Domain.FileAggregate.FileInfo GetFileByLink(string link);
+
         MemoryStream GetZipArchive(string pathToUserFolder, int folderID, string userID);
     }
 }
