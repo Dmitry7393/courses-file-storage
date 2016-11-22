@@ -223,7 +223,7 @@
 
                 // Summary:
                 //     Create fileName that actual stored on server
-                var name = file.Name.Substring(0, file.Name.IndexOf("."));
+                var name = file.Name;
                 name += ".dat";
 
                 // Summary:
@@ -257,7 +257,7 @@
                 // Summary:
                 //     Create fileName that actual stored on server
 
-                var name = file.Name.Substring(0, file.Name.IndexOf("."));
+                var name = file.Name;
                 name += ".dat";
 
                 // Summary:
@@ -267,7 +267,8 @@
             }
             catch (Exception ex)
             {
-                return Json(new { error = true, reason = ex.Message }, JsonRequestBehavior.AllowGet);
+                return null;
+                //return Json(new { error = true, reason = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

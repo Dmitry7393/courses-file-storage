@@ -19,6 +19,7 @@
              = "%!abcdefghijklmnopqrstuvwxyz1234567890?ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
 
         private readonly IFileInfoRepository _fileInfoRepository;
+        
         private const string BASE_EXTENSION = ".dat";
         /// <summary>
         /// Initializes a new instance of the <see cref="FileService"/> class.
