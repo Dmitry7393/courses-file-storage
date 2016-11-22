@@ -253,7 +253,7 @@
 
                 // Summary:
                 //    Delete file
-                this._fileService.Delete(id, User.Identity.GetUserId());
+                this._fileService.Delete(id, User.Identity.GetUserId(), Server.MapPath(getPathToUserFolder()));
             }
             catch (Exception ex)
             {
