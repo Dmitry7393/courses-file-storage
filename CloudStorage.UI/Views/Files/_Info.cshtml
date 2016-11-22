@@ -3,7 +3,7 @@
 }
 
 <div class="col-lg-3" id="info" style="background-color:white; min-height: 82vh; ">
-
+    
     @if (info == null)
     {
         <img src="~/Content/images/Info.png" alt="" style=" display: block; margin-left: auto; margin-right: auto;"><br>
@@ -11,6 +11,7 @@
     }
     else
     {
+        <div hidden id="link">@info.ShareLink </div>
         <table class="table">
             <tbody>
 
@@ -46,17 +47,11 @@
                     <td>@info.LastTimeChanged</td>
                 </tr>
                 <tr>
-                    <td id="link">ShareLink</td>
-                    <td>@info.ShareLink </td>
-                </tr>
-                <tr>
-                    <td><button class="btn btn-sm btn-success" onclick="copyToClipboard('link')">ToClipboard</button></td>
+                    <td>ShareLink</td>
+                    <td><button class="btn btn-info" onclick="copyToClipboard('link')">ToClipboard</button></td>
                 </tr>
 
             </tbody>
-
-
-
         </table>
     }
     <script>
