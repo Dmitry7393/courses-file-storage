@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage.Entity", "CloudStorage.Entity\CloudStorage.Entity.csproj", "{6C3E58B9-6341-4C49-BF3A-9C826CEEE452}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{01CE9976-81BC-4945-B1A7-435E2F647A7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServices", "TestServices\TestServices.csproj", "{47F1A168-055D-43F0-840E-CE7C09DCF356}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{6C3E58B9-6341-4C49-BF3A-9C826CEEE452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C3E58B9-6341-4C49-BF3A-9C826CEEE452}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C3E58B9-6341-4C49-BF3A-9C826CEEE452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F1A168-055D-43F0-840E-CE7C09DCF356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F1A168-055D-43F0-840E-CE7C09DCF356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F1A168-055D-43F0-840E-CE7C09DCF356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F1A168-055D-43F0-840E-CE7C09DCF356}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +56,6 @@ Global
 		{E23409DD-BAFD-4AF5-817C-27D7F8D234F5} = {92DE4EA5-3BDB-4A3C-9A7E-82F3E6D5B205}
 		{3DC5988A-EF6D-425B-85AC-853893C749EC} = {92DE4EA5-3BDB-4A3C-9A7E-82F3E6D5B205}
 		{6C3E58B9-6341-4C49-BF3A-9C826CEEE452} = {351C0061-0E48-4C1C-B766-B6BEC851BA26}
+		{47F1A168-055D-43F0-840E-CE7C09DCF356} = {01CE9976-81BC-4945-B1A7-435E2F647A7C}
 	EndGlobalSection
 EndGlobal
